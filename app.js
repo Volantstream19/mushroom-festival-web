@@ -31,7 +31,7 @@ const morel = {
     type: 'morel',
 };
 
-const amountFound = [0, 0, 0, 0, 1, 1, 1, 2];
+const amountFound = [0, 0, 0, 0, 1, 1, 1, 2, 2];
 const mushroomTypeFound = [porcini, porcini, porcini, morel, morel, chanterelle];
 
 /* Events */
@@ -47,6 +47,7 @@ huntMushroomsButton.addEventListener('click', () => {
             type: mushroomType.type,
         };
         // > add the new mushroom to the mushrooms state
+        mushrooms.push(mushroom);
     }
 
     message = foundMessage[found];
@@ -62,16 +63,21 @@ addFriendForm.addEventListener('submit', (e) => {
     // > create a new friend, with a "name" property that
     // is populated from `formData.get('name')` and a
     // "satisfied" property with an initial value of 0
-
+    const friend = {
+        name: formData.get('name'),
+        satisfied: 0,
+    };
+    friends.push(friend);
     // > add the new friend to the friends array
 
     // > set the message state to let the user know
     // they invited a new friend to the festival, include the friend's
     // name in the message
+    message = `${friend.name} has been Invited To The Hunt`;
 
     addFriendForm.reset();
-
     // > call the display functions that need to re-display
+    displayFriends();
 });
 
 sayGoodbyeButton.addEventListener('click', () => {
@@ -79,6 +85,9 @@ sayGoodbyeButton.addEventListener('click', () => {
     for (const friend of friends) {
         // > if the friend is not fully satisfied, push
         // them into the stillHungry array
+        if (friend.satisfied < 3) {
+            stillHungry.push(friend);
+        }
     }
     friends = stillHungry;
     displayFriends();
